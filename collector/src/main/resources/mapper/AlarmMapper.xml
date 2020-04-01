@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.navercorp.pinpoint.collector.dao.AlarmDao">
+
+    <select id="selectRuleByApplicationId" resultType="Rule">
+        SELECT *
+        FROM alarm_rule
+        WHERE application_id = #{applicationId}
+    </select>
+
+    <insert id="insertErrorHistory" parameterType="Span">
+        INSERT INTO ERROR_HISTORY (rpc, agent_id, application_id, agent_start_time, transaction_sequence, remote_addr, end_point, start_time, err_code)
+        VALUES
+            (#{rpc}, #{agentId}, #{applicationId}, #{agentStartTime},#{transactionId.transactionSequence}, #{remoteAddr}, #{endPoint}, #{startTime}, #{errCode})
+    </insert>
+</mapper>

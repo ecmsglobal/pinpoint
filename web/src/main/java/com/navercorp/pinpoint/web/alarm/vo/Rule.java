@@ -30,6 +30,7 @@ public class Rule {
     private boolean smsSend;
     private boolean emailSend;
     private String notes;
+    private String filter;
 
     public Rule() {
     }
@@ -129,7 +130,16 @@ public class Rule {
         sb.append(", smsSend=").append(smsSend);
         sb.append(", emailSend=").append(emailSend);
         sb.append(", notes='").append(notes).append('\'');
+        sb.append(", filter='").append(filter).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 }

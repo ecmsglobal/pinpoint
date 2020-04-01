@@ -351,11 +351,11 @@
 				cbFail({ errorMessage: CONSTS.INPUT_PHONE_OR_EMAIL });
 				return;
 			}
-			if ( oNewPinpointUser.phoneNumber !== "" && validatePhone( oNewPinpointUser.phoneNumber ) === false ) {
-				addBlink( aEditNode );
-				cbFail({ errorMessage: CONSTS.YOU_CAN_ONLY_INPUT_NUMBERS });
-				return;
-			}
+			// if ( oNewPinpointUser.phoneNumber !== "" && validatePhone( oNewPinpointUser.phoneNumber ) === false ) {
+			// 	addBlink( aEditNode );
+			// 	cbFail({ errorMessage: CONSTS.YOU_CAN_ONLY_INPUT_NUMBERS });
+			// 	return;
+			// }
 			if ( oNewPinpointUser.email !== "" && validateEmail( oNewPinpointUser.email ) === false ) {
 				addBlink( aEditNode );
 				cbFail({ errorMessage: CONSTS.INVALID_EMAIL_FORMAT });
@@ -435,11 +435,11 @@
 				cbFail({ errorMessage: CONSTS.INPUT_PHONE_OR_EMAIL });
 				return;
 			}
-			if ( oPinpointUser.phoneNumber !== "" && validatePhone( oPinpointUser.phoneNumber ) === false ) {
-				addBlink( aEditNode );
-				cbFail({ errorMessage: CONSTS.YOU_CAN_ONLY_INPUT_NUMBERS });
-				return;
-			}
+			// if ( oPinpointUser.phoneNumber !== "" && validatePhone( oPinpointUser.phoneNumber ) === false ) {
+			// 	addBlink( aEditNode );
+			// 	cbFail({ errorMessage: CONSTS.YOU_CAN_ONLY_INPUT_NUMBERS });
+			// 	return;
+			// }
 			if ( oPinpointUser.email !== "" && validateEmail( oPinpointUser.email ) === false ) {
 				addBlink( aEditNode );
 				cbFail({ errorMessage: CONSTS.INVALID_EMAIL_FORMAT });

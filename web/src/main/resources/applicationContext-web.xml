@@ -11,6 +11,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.navercorp.pinpoint.web.dao.hbase,
                                          com.navercorp.pinpoint.web.service,
+                                         com.navercorp.pinpoint.web.alarm.vo,
                                          com.navercorp.pinpoint.web.mapper,
                                          com.navercorp.pinpoint.web.filter,
                                          com.navercorp.pinpoint.web.config,
@@ -24,6 +25,7 @@
             <list>
                 <value>classpath:hbase.properties</value>
                 <value>classpath:jdbc.properties</value>
+                <value>classpath:batch.properties</value>
             </list>
         </property>
     </bean>
@@ -39,6 +41,22 @@
     <import resource="classpath:applicationContext-cache.xml" />
     <import resource="classpath:applicationContext-websocket.xml" />
     <import resource="classpath:applicationContext-web-namespace.xml"/>
+
+    <bean id="alarmMessageSenderImpl" class="com.navercorp.pinpoint.web.alarm.AlarmMessageSenderImpl">
+        <property name="mailSender" ref="javaMailSenderImpl" />
+    </bean>
+
+    <bean id="javaMailSenderImpl" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${alarm.mail.server.url:}" />
+        <property name="port" value="${alarm.mail.server.port:}" />
+        <property name="username" value="${alarm.mail.server.username:}" />
+        <property name="password" value="${alarm.mail.server.password:}" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.from">${alarm.mail.sender.address:}</prop>
+            </props>
+        </property>
+    </bean>
 
     <bean id="jsonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
     </bean>

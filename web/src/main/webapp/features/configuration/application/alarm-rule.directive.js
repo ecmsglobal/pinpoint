@@ -20,7 +20,7 @@
 				var $elGuide = $element.find(".some-guide");
 				var $elWrapper = $element.find(".wrapper");
 				var $elLoading = $element.find(".some-loading");
-				var aEditNodes = [ $element.find("tr._edit1"), $element.find("tr._edit2") ];
+				var aEditNodes = [ $element.find("tr._edit1"), $element.find("tr._edit2"), $element.find("tr._edit3")];
 				var $elAlert = $element.find(".some-alert");
 				var $workingNode = null;
 
@@ -67,7 +67,7 @@
 					}, showAlert );
 				}
 				function showAddArea() {
-					$elWrapper.find("tbody").prepend( aEditNodes[1] ).prepend( aEditNodes[0] );
+					$elWrapper.find("tbody").prepend( aEditNodes[2] ).prepend( aEditNodes[1] ).prepend( aEditNodes[0] );
 					AlarmUtilService.hide( aEditNodes[0].find( CONSTS.DIV_EDIT ) );
 					AlarmUtilService.show( aEditNodes[0].find( CONSTS.DIV_ADD ) );
 					$.each( aEditNodes, function( index, $el ) {
@@ -94,6 +94,7 @@
 						return "";
 					})() );
 					aEditNodes[1].find("input").val( oRule.notes );
+					aEditNodes[2].find("input").val( oRule.filter );
 					$.each( aEditNodes, function( index, $el ) {
 						AlarmUtilService.show( $el );
 					});
@@ -107,6 +108,7 @@
 					aEditNodes[0].find("input[name=threshold]").val( "1" );
 					aEditNodes[0].find("select[name=type]").val( "all" );
 					aEditNodes[1].find("input").val( "" );
+					aEditNodes[2].find("input").val( "" );
 				}
 				function getNewRule( ruleId ) {
 					var notificationType = aEditNodes[0].find("select[name=type]").val();
@@ -119,7 +121,8 @@
 						"threshold":  aEditNodes[0].find("input[name=threshold]").val(),
 						"smsSend": ( notificationType === "all" || notificationType === "sms" ? true : false ),
 						"emailSend": ( notificationType === "all" || notificationType === "email" ? true : false ),
-						"notes": aEditNodes[1].find("input").val()
+						"notes": aEditNodes[1].find("input").val(),
+						"filter": aEditNodes[2].find("input").val()
 					};
 					if ( angular.isUndefined( ruleId ) === false ) {
 						oRule.ruleId = ruleId;
@@ -187,7 +190,7 @@
 					cancelPreviousWork();
 					$workingNode = AlarmUtilService.getNode( $event, "tr" );
 					UpdateAlarm.onAction( AlarmUtilService, $workingNode, function( ruleId ) {
-						$workingNode.after( aEditNodes[1] ).after( aEditNodes[0] );
+						$workingNode.after( aEditNodes[2] ).after( aEditNodes[1] ).after( aEditNodes[0] );
 						showEditArea( searchRule( ruleId ) );
 					});
 				};

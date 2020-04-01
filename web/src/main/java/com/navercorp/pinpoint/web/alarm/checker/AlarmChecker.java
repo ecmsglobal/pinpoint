@@ -82,7 +82,7 @@ public abstract class AlarmChecker<T> {
     }
     
     public String getEmailMessage() {
-        return String.format("%s value is %s%s during the past 5 mins.(Threshold : %s%s)<br>", rule.getCheckerName(), getDetectedValue(), unit, rule.getThreshold(), unit);
+        return String.format("%s value is %s%s during the past 5 mins.(Threshold : %s%s) \r\n", rule.getCheckerName(), getDetectedValue(), unit, rule.getThreshold(), unit);
     }
     
     protected abstract T getDetectedValue();

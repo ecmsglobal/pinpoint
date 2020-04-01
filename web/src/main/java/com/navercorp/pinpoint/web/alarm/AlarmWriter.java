@@ -16,15 +16,15 @@
 
 package com.navercorp.pinpoint.web.alarm;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.navercorp.pinpoint.web.alarm.checker.AlarmChecker;
 import com.navercorp.pinpoint.web.alarm.vo.CheckerResult;
 import com.navercorp.pinpoint.web.service.AlarmService;
+import com.navercorp.pinpoint.web.service.FilteredMapService;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author minwoo.jung
@@ -32,14 +32,18 @@ import com.navercorp.pinpoint.web.service.AlarmService;
 public class AlarmWriter implements ItemWriter<AlarmChecker> {
 
     @Autowired(required = false)
-    private AlarmMessageSender alarmMessageSender = new EmptyMessageSender();
+    private AlarmMessageSender alarmMessageSender = new AlarmMessageSenderImpl();
 
     @Autowired
     private AlarmService alarmService;
+    @Autowired
+    private FilteredMapService filteredMapService;
 
     @Override
     public void write(List<? extends AlarmChecker> checkers) throws Exception {
         Map<String, CheckerResult> beforeCheckerResults = alarmService.selectBeforeCheckerResults(checkers.get(0).getRule().getApplicationId());
+//        final TransactionId transactionId = TransactionIdUtils.parseTransactionId("uat210^1585284595264^104029");
+//        ApplicationMap map = filteredMapService.selectApplicationMap(transactionId,0);
 
         for (AlarmChecker checker : checkers) {
             CheckerResult beforeCheckerResult = beforeCheckerResults.get(checker.getRule().getCheckerName());

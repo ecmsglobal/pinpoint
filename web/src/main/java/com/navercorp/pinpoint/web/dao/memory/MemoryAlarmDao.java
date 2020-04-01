@@ -117,6 +117,11 @@ public class MemoryAlarmDao implements AlarmDao {
     }
 
     @Override
+    public List<Map<String, Object>> selectErrorSummary(String applicationId) {
+        return null;
+    }
+
+    @Override
     public List<CheckerResult> selectBeforeCheckerResultList(String applicationId) {
         return new ArrayList<>();
     }

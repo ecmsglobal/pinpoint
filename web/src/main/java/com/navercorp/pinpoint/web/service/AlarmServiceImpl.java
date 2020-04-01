@@ -15,19 +15,18 @@
  */
 package com.navercorp.pinpoint.web.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.navercorp.pinpoint.web.alarm.checker.AlarmChecker;
 import com.navercorp.pinpoint.web.alarm.vo.CheckerResult;
 import com.navercorp.pinpoint.web.alarm.vo.Rule;
 import com.navercorp.pinpoint.web.dao.AlarmDao;
 import com.navercorp.pinpoint.web.vo.UserGroup;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author minwoo.jung
@@ -106,5 +105,19 @@ public class AlarmServiceImpl implements AlarmService {
     public void updateUserGroupIdOfRule(UserGroup userGroup) {
         alarmDao.updateUserGroupIdOfRule(userGroup);
     }
+
+    @Override
+    public String selectErrorSummary(String applicationId) {
+        List<Map<String, Object>> list = alarmDao.selectErrorSummary(applicationId);
+        String errorSummary = "\r\n";
+        for (Map<String, Object> stringObjectMap : list) {
+            errorSummary += "agent_id:" + stringObjectMap.get("agent_id")+ ",";
+            errorSummary += "application_id:" + stringObjectMap.get("application_id") + ",";
+            errorSummary += "rpc:" + stringObjectMap.get("rpc")+ ",";
+            errorSummary += "err_count:" + stringObjectMap.get("err_count") + "\r\n";
+        }
+        return errorSummary;
+    }
+
 
 }

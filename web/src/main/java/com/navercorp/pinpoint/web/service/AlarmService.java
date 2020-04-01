@@ -15,13 +15,13 @@
  */
 package com.navercorp.pinpoint.web.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.navercorp.pinpoint.web.alarm.checker.AlarmChecker;
 import com.navercorp.pinpoint.web.alarm.vo.CheckerResult;
 import com.navercorp.pinpoint.web.alarm.vo.Rule;
 import com.navercorp.pinpoint.web.vo.UserGroup;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author minwoo.jung
@@ -45,4 +45,6 @@ public interface AlarmService {
     void deleteRuleByUserGroupId(String groupId);
 
     void updateUserGroupIdOfRule(UserGroup userGroup);
+
+    String selectErrorSummary(String applicationId);
 }

@@ -30,6 +30,7 @@
 
     <context:component-scan
             base-package="com.navercorp.pinpoint.collector.dao.hbase,
+                        com.navercorp.pinpoint.collector.dao.mysql,
                         com.navercorp.pinpoint.collector.handler,
                         com.navercorp.pinpoint.collector.receiver.thrift.tcp,
                         com.navercorp.pinpoint.collector.manage,
@@ -47,6 +48,7 @@
         <property name="locations">
             <list>
                 <value>classpath:hbase.properties</value>
+                <value>classpath:jdbc.properties</value>
                 <value>classpath:pinpoint-collector.properties</value>
             </list>
         </property>
@@ -80,6 +82,8 @@
 
     <import resource="classpath:applicationContext-hbase.xml"/>
     <import resource="classpath:applicationContext-collector-namespace.xml"/>
+    <import resource="classpath:applicationContext-datasource.xml"/>
+    <import resource="classpath:applicationContext-dao-config.xml" />
 
     <util:list id="cachedStatisticsDaoList" value-type="com.navercorp.pinpoint.collector.dao.CachedStatisticsDao">
         <beans:ref bean="hbaseMapStatisticsCallerDao"/>

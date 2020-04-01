@@ -19,14 +19,18 @@ package com.navercorp.pinpoint.collector.service;
 import com.navercorp.pinpoint.collector.dao.ApplicationTraceIndexDao;
 import com.navercorp.pinpoint.collector.dao.HostApplicationMapDao;
 import com.navercorp.pinpoint.collector.dao.TraceDao;
+import com.navercorp.pinpoint.collector.vo.Rule;
+import com.navercorp.pinpoint.collector.vo.Span;
 import com.navercorp.pinpoint.common.server.bo.SpanBo;
 import com.navercorp.pinpoint.common.server.bo.SpanChunkBo;
 import com.navercorp.pinpoint.common.server.bo.SpanEventBo;
 import com.navercorp.pinpoint.common.service.ServiceTypeRegistryService;
 import com.navercorp.pinpoint.common.trace.ServiceType;
+import com.navercorp.pinpoint.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +42,9 @@ public class TraceService {
 
     @Autowired
     private TraceDao traceDao;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @Autowired
     private ApplicationTraceIndexDao applicationTraceIndexDao;
@@ -150,12 +157,28 @@ public class TraceService {
             bugCheck++;
         }
 
+
         // record the response time of the current node (self).
         // blow code may be conflict of idea above callee key.
         // it is odd to record reversely, because of already recording the caller data at previous node.
         // the data may be different due to timeout or network error.
-
-        statisticsService.updateResponseTime(span.getApplicationId(), applicationServiceType, span.getAgentId(), span.getElapsed(), isError);
+        if(span.getErrCode() != 0) {
+            List<Rule> rules = alarmService.selectRuleByApplicationId(span.getApplicationId());
+            if(rules !=null && rules.size() > 0){
+                for (Rule rule : rules) {
+                    if(!StringUtils.isEmpty(rule.getFilter()) &&  rule.getFilter().indexOf(span.getRpc()) != -1){
+                        logger.debug("filter rpc error:{}",span.getRpc());
+                    } else {
+                        Span spanVo = new Span();
+                        BeanUtils.copyProperties(span,spanVo);
+                        alarmService.insertErrorHistory(spanVo);
+                        statisticsService.updateResponseTime(span.getApplicationId(), applicationServiceType, span.getAgentId(), span.getElapsed(), isError);
+                    }
+                }
+            }
+        } else {
+            statisticsService.updateResponseTime(span.getApplicationId(), applicationServiceType, span.getAgentId(), span.getElapsed(), isError);
+        }
 
         if (bugCheck != 1) {
             logger.warn("ambiguous span found(bug). span:{}", span);

@@ -196,6 +196,43 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+        <!-- Mybatis dependecies -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-tx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-jdbc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -221,33 +258,33 @@
             <id>run-integration-test</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat6-maven-plugin</artifactId>
-                        <version>2.2</version>
-                        <configuration>
-                            <path>/</path>
-                            <port>20331</port>
-                            <fork>true</fork>
-                            <uriEncoding>UTF-8</uriEncoding>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>start-tomcat</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>stop-tomcat</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>shutdown</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.tomcat.maven</groupId>-->
+<!--                        <artifactId>tomcat6-maven-plugin</artifactId>-->
+<!--                        <version>2.2</version>-->
+<!--                        <configuration>-->
+<!--                            <path>/</path>-->
+<!--                            <port>20331</port>-->
+<!--                            <fork>true</fork>-->
+<!--                            <uriEncoding>UTF-8</uriEncoding>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>start-tomcat</id>-->
+<!--                                <phase>pre-integration-test</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>run</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>stop-tomcat</id>-->
+<!--                                <phase>post-integration-test</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>shutdown</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
                 </plugins>
             </build>
         </profile>

@@ -15,11 +15,12 @@
  */
 package com.navercorp.pinpoint.web.dao;
 
-import java.util.List;
-
 import com.navercorp.pinpoint.web.alarm.vo.CheckerResult;
 import com.navercorp.pinpoint.web.alarm.vo.Rule;
 import com.navercorp.pinpoint.web.vo.UserGroup;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author minwoo.jung
@@ -45,4 +46,6 @@ public interface AlarmDao {
     void insertCheckerResult(CheckerResult checkerResult);
 
     void updateUserGroupIdOfRule(UserGroup userGroup);
+
+    List<Map<String, Object>> selectErrorSummary(String applicationId);
 }

@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.navercorp.pinpoint.collector.dao;
 
-package com.navercorp.pinpoint.web.alarm;
 
-import com.navercorp.pinpoint.web.alarm.checker.AlarmChecker;
-import me.chanjar.weixin.common.error.WxErrorException;
+import com.navercorp.pinpoint.collector.vo.Rule;
+import com.navercorp.pinpoint.collector.vo.Span;
+import com.navercorp.pinpoint.common.server.bo.SpanBo;
+
+import java.util.List;
 
 /**
  * @author minwoo.jung
  */
-public interface AlarmMessageSender {
-    void sendSms(AlarmChecker checker, int sequenceCount);
-    void sendEmail(AlarmChecker checker, int sequenceCount);
+public interface AlarmDao {
+    List<Rule> selectRuleByApplicationId(String applicationId);
+    void insertErrorHistory(Span span);
 }
