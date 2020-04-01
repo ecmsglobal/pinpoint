@@ -67,8 +67,8 @@
 
     <properties>
         <encoding>UTF-8</encoding>
-        <jdk.version>1.6</jdk.version>
-        <jdk.home>${env.JAVA_6_HOME}</jdk.home>
+        <jdk.version>1.8</jdk.version>
+        <jdk.home>${env.JAVA_8_HOME}</jdk.home>
         <test.jdk.home>${jdk.home}</test.jdk.home>
 
         <!-- library -->
@@ -509,9 +509,6 @@
                 <version>1.4.7</version>
             </dependency>
 
-
-
-
             <dependency>
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
@@ -802,7 +799,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${plugin.spotbugs.version}</version>
                 <configuration>
-                    <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude.xml</excludeFilterFile>
+                    <excludeFilterFile>${basedir}/spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
             <plugin>
@@ -819,7 +816,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.5</version>
+                                    <version>3.1.0</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>1.8</version>
@@ -928,7 +925,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${plugin.spotbugs.version}</version>
                 <configuration>
-                    <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude.xml</excludeFilterFile>
+                    <excludeFilterFile>${basedir}/spotbugs-exclude.xml</excludeFilterFile>
                     <xmlOutput>true</xmlOutput>
                     <xmlOutputDirectory>${project.build.directory}/spotbugs</xmlOutputDirectory>
                 </configuration>
@@ -984,19 +981,19 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.7.1</version>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.5</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <aggregate>true</aggregate>
-                    <inputEncoding>${encoding}</inputEncoding>
-                    <outputEncoding>${encoding}</outputEncoding>
-                    <windowTitle>Pinpoint ${project.version} Cross Reference</windowTitle>
-                    <docTitle>Pinpoint ${project.version} Cross Reference</docTitle>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jxr-plugin</artifactId>-->
+<!--                <version>2.5</version>-->
+<!--                <inherited>false</inherited>-->
+<!--                <configuration>-->
+<!--                    <aggregate>true</aggregate>-->
+<!--                    <inputEncoding>${encoding}</inputEncoding>-->
+<!--                    <outputEncoding>${encoding}</outputEncoding>-->
+<!--                    <windowTitle>Pinpoint ${project.version} Cross Reference</windowTitle>-->
+<!--                    <docTitle>Pinpoint ${project.version} Cross Reference</docTitle>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </reporting>
 
@@ -1019,28 +1016,28 @@
             </properties>
         </profile>
 
-        <profile>
-            <id>klocwork</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.klocwork.ps</groupId>
-                        <artifactId>kwmaven</artifactId>
-                        <version>2.1.1</version>
-                        <configuration>
-                            <buildspec_filename>${KWINJECT_OUT_PATH}</buildspec_filename>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+<!--        <profile>-->
+<!--            <id>klocwork</id>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>com.klocwork.ps</groupId>-->
+<!--                        <artifactId>kwmaven</artifactId>-->
+<!--                        <version>2.1.1</version>-->
+<!--                        <configuration>-->
+<!--                            <buildspec_filename>${basedir}/out/klocwork</buildspec_filename>-->
+<!--                        </configuration>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <phase>validate</phase>-->
+<!--                                <goals>-->
+<!--                                    <goal>run</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
     </profiles>
 </project>
