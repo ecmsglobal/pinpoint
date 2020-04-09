@@ -10,9 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import javax.mail.Message;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 
@@ -20,7 +23,7 @@ public class AlarmMessageSenderImpl
         implements AlarmMessageSender
 {
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private MailSender mailSender;
+    private JavaMailSenderImpl mailSender;
 
     @Autowired
     private WxCpService wxCpService;
@@ -31,7 +34,7 @@ public class AlarmMessageSenderImpl
     @Autowired
     private AlarmService alarmService;
 
-    public void setMailSender(MailSender mailSender)
+    public void setMailSender(JavaMailSenderImpl mailSender)
     {
         this.mailSender = mailSender;
     }
@@ -52,7 +55,7 @@ public class AlarmMessageSenderImpl
 
     public void sendEmail(AlarmChecker checker, int sequenceCount)
     {
-        List receivers = this.userGroupService.selectEmailOfMember(checker.getuserGroupId());
+        List<String> receivers = this.userGroupService.selectEmailOfMember(checker.getuserGroupId());
 
         if (receivers.size() == 0) {
             return;
@@ -61,16 +64,22 @@ public class AlarmMessageSenderImpl
         this.logger.info("send email : {}", checker.getEmailMessage());
         try {
             String error_summary = alarmService.selectErrorSummary(checker.getRule().getApplicationId());
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo((String[])receivers.toArray(new String[receivers.size()]));
+            MimeMessage message = mailSender.createMimeMessage();
+            message.setRecipients(Message.RecipientType.TO, getReceivers(receivers));
             message.setSubject(String.format("[PINPOINT Alarm - %s]", new Object[] { checker.getRule().getApplicationId() }));
             message.setText(String.format("%s\n\n%s", new Object[] { checker.getEmailMessage() + error_summary, checker.getRule().getNotes() }));
             this.mailSender.send(message);
-            System.out.println(message.getText());
         } catch (Exception e) {
             this.logger.error("send email error", e);
         }
     }
+    private InternetAddress[] getReceivers(List<String> receivers) throws AddressException {
+        InternetAddress[] receiverArray = new InternetAddress[receivers.size()];
+        int index = 0;
+        for (String receiver : receivers) {
+            receiverArray[index++] = new InternetAddress(receiver);
+        }
 
-
+        return receiverArray;
+    }
 }
